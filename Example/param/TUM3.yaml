@@ -1,0 +1,84 @@
+%YAML:1.0
+Dataset.Type: "TUM"
+
+# ------------------------------------
+#  Single-frame ellipsoid estimation
+# ------------------------------------
+# Pointcloud segmentation parameters
+EllipsoidExtraction.Euclidean.ClusterTolerance: 0.02
+EllipsoidExtraction.Euclidean.MinClusterSize: 100
+EllipsoidExtraction.Euclidean.CenterDis: 0.5
+
+# weights of 3d, 2d edges in optimization
+Optimizer.Edges.3DEllipsoid.Scale: 10000
+Optimizer.Edges.2D.Scale: 1
+
+# ------------------------------
+#  Symmetry Estimation
+# ------------------------------
+# Whether open symmetry estimation
+EllipsoidExtraction.Symmetry.Open: 1
+
+# Downsample grid size. Extremely influence the time and efficiency.
+EllipsoidExtraction.Symmetry.GridSize: 0.1
+
+# Parameters for symmetry probability
+SymmetrySolver.Sigma: 0.1
+
+# ----------------------------------
+# Symmetry types of semantic labels
+# ----------------------------------
+  
+# Please see the definitions in the function:
+# EllipsoidExtractor::LoadSymmetryPrior()
+
+# -------------------------------
+# Ground Plane Extraction
+# -------------------------------
+Plane.MinSize: 200
+Plane.AngleThreshold: 5
+Plane.DistanceThreshold: 0.1
+
+# Whether use the normal of the groundplane to constrain the ellipsoid
+Optimizer.Edges.GravityPrior.Open: 1
+Optimizer.Edges.GravityPrior.Scale: 100
+
+# ------------------------------
+# Other Parameters
+# ------------------------------
+# Bounding box filter
+Measurement.Border.Pixels: 10
+Measurement.LengthLimit.Pixels: 0
+
+# A observation will only be valid when the robot has a change of view.
+# Close it to consider every observations.
+Tracking.KeyFrameCheck.Close: 1
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters. 
+#--------------------------------------------------------------------------------------------
+
+# Camera calibration and distortion parameters (OpenCV) 
+Camera.fx: 535.4
+Camera.fy: 539.2
+Camera.cx: 320.1
+Camera.cy: 247.6
+
+Camera.width: 640
+Camera.height: 480
+
+Camera.scale: 5000.0
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2
+Viewer.CameraSize: 0.1
+Viewer.CameraLineWidth: 3
+Viewer.ViewpointX: 0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -1.8
+Viewer.ViewpointF: 500
+

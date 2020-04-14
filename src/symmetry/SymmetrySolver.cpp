@@ -32,6 +32,11 @@ bool isInFrustrum(int x, int y, int range_x, int range_y)
     return isInRange(x,y,0,range_x,0,range_y);
 }
 
+bool checkValidPoint(EllipsoidSLAM::PointXYZRGB &p)
+{
+    return (pcl_isfinite(p.x) && pcl_isfinite(p.y) && pcl_isfinite(p.z));
+}
+
 SymmetrySolver::SymmetrySolver(){
     mbOpenSparseEstimation = false;
 }
@@ -51,7 +56,9 @@ double SymmetrySolver::GetPointCloudProb(Vector4d &bbox, PointCloud* pCloudSym, 
     
     int num = pCloudSym->size();
 
-    double ln_total_P;
+    double ln_total_P = 0;
+
+    int num_invalid = 0;
     for( int i=0; i<num; i++)
     {
         auto p = (*pCloudSym)[i];
@@ -88,14 +95,24 @@ double SymmetrySolver::GetPointCloudProb(Vector4d &bbox, PointCloud* pCloudSym, 
                 }
                 else    // observable area
                 {
-                    dis_diff = findMinimalDistanceWithKdTree(p, kdTree);
+                    if(!checkValidPoint(p)) {
+                        dis_diff = 0;
+                        num_invalid++;
+                    }
+                    else
+                        dis_diff = findMinimalDistanceWithKdTree(p, kdTree);
                 }
             }
 
         }
         else    // observable area
         {
-            dis_diff = findMinimalDistanceWithKdTree(p, kdTree);
+            if(!checkValidPoint(p)) {
+                dis_diff = 0;
+                num_invalid++;
+            }
+            else
+                dis_diff = findMinimalDistanceWithKdTree(p, kdTree);
         }
 
         // Sigma is used for probability calculation. it's useless in the optimization process.
@@ -106,8 +123,16 @@ double SymmetrySolver::GetPointCloudProb(Vector4d &bbox, PointCloud* pCloudSym, 
         ln_total_P += ln_P;        
     }
 
-    double aver_ln_P = ln_total_P / double(num);  
+    int num_valid = num - num_invalid;
+    double aver_ln_P;
+    if(num_valid > 0)
+        aver_ln_P = ln_total_P / double(num_valid);  
+    else
+        aver_ln_P = -INFINITY;
     mData.pSymetryCloud = pCloudSym;
+
+    if(num_invalid>0)
+        std::cout << " - Invalid/Valid SymPoints Num : " << num_invalid << " / " << num_valid << std::endl;
 
     return aver_ln_P;
 }

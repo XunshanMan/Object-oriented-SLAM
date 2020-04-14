@@ -111,17 +111,16 @@ public:
     Eigen::Vector4d GeneratePlaneVec();
     Eigen::Vector4d GenerateAnotherPlaneVec();
 
-    Vector4d param; // A B C : AX+BY+CZ+D=0
-    Vector3d color; // r g b , [0,1.0]
-
     // finite plane parameters; treat as a square
     double mdPlaneSize; // side length (meter)
-    Vector3d mvPlaneCenter; // the center of the square. roughly defined.
     bool mbLimited;
 
     // dual plane parameter
     double mdDualDis;
-    
+
+    Vector4d param; // A B C : AX+BY+CZ+D=0
+    Vector3d color; // r g b , [0,1.0]
+    Vector3d mvPlaneCenter; // the center of the square. roughly defined.    
 private:
 
     Eigen::Vector3d GetLineFromCenterAngle(const Eigen::Vector2d center, double angle);

@@ -7,9 +7,10 @@ We have released a C++ implementation and a demo trajectory. We need to point ou
  * The core modules of Groundplane Extraction, Ellipsoid Estimation, and Symmetry Estimation are basic versions. They may not have full performance. Please see the paper for the complete framework. 
  * By default, only mapping is supported. If you want, it's possible to make simple changes to the Optimizer to enable the SLAM mode.
 
-
 ## Related Paper
-[1] Ziwei Liao, Wei Wang, Xianyu Qi, Xiaoyu Zhang, Lin Xue, Jianzhen Jiao, Ran Wei, Object-oriented SLAM using Quadrics and Symmetry Properties for Indoor Environments. Submitted to IROS 2020.
+[1] Ziwei Liao, Wei Wang, Xianyu Qi, Xiaoyu Zhang, Lin Xue, Jianzhen Jiao, Ran Wei, Object-oriented SLAM using Quadrics and Symmetry Properties for Indoor Environments. arXiv 2020. [[pdf]](https://arxiv.org/abs/2004.05303
+) [[Video]](https://www.youtube.com/watch?v=u9zRBp4TPIs
+) 
 
 [2] Lachlan Nicholson, Michael Milford, & Niko Sünderhauf. . Quadricslam: dual quadrics from object detections as landmarks in object-oriented slam. IEEE Robotics & Automation Letters, 1-1.
 

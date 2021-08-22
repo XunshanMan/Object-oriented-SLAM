@@ -1,24 +1,38 @@
 # EllipsoidSLAM
 
+## Update
+### Aug 22, 2021
+* Now support Ubuntu 20.04 and OpenCV 4.2
+* Fix bugs for crushes
+
 ## Introduction
+
+![](.pics/demo.png)
+
 We propose a sparse object-level SLAM using Quadrics and Symmetry Properties for indoor environments. The algorithm is specially designed for mobile robots mounting an RGB-D camera. The algorithm takes bounding boxes generated from object detection and also the point cloud from the RGB-D frame to estimate the pose and occupy space of objects. Since ellipsoids are taken as the object representation, we name it EllipsoidSLAM.
 
 We have released a C++ implementation and a demo trajectory. We need to point out that this code is only a basic demo:
  * The core modules of Groundplane Extraction, Ellipsoid Estimation, and Symmetry Estimation are basic versions. They may not have full performance. Please see the paper for the complete framework. 
  * By default, only mapping is supported. If you want, it's possible to make simple changes to the Optimizer to enable the SLAM mode.
 
+## Author
+
+Ziwei Liao et al., Robotics Institute, School of Mechanical Engineering & Automation, Beihang University, Beijing, China (Email: liaoziwei@buaa.edu.cn)
+
 ## Related Paper
+Please cite the following papers when you found this code useful for your research. Welcome to read our new paper [2], which proposes two RGB-D observation models for quadrics, and introduces an automatic data association method.
+
 [1] Ziwei Liao, Wei Wang, Xianyu Qi, Xiaoyu Zhang, Lin Xue, Jianzhen Jiao, Ran Wei, Object-oriented SLAM using Quadrics and Symmetry Properties for Indoor Environments. arXiv 2020. [[pdf]](https://arxiv.org/abs/2004.05303
 ) [[Video]](https://www.youtube.com/watch?v=u9zRBp4TPIs
 ) 
 
-[2] Lachlan Nicholson, Michael Milford, & Niko Sünderhauf. . Quadricslam: dual quadrics from object detections as landmarks in object-oriented slam. IEEE Robotics & Automation Letters, 1-1.
+[2] Liao, Z.; Wang, W.; Qi, X.; Zhang, X. RGB-D Object SLAM Using Quadrics for Indoor Environments. Sensors 2020, 20, 5150. [[pdf]](https://www.mdpi.com/1424-8220/20/18/5150/pdf)
 
 ## Codes
 ### Dependencies
 The code has been tested on Ubuntu 16.04/18.04. The main dependencies are:
 
-* OpenCV (2.4 tested)
+* OpenCV (4.X recommended)
 * PCL 1.7+
 * Pangolin
 * g2o

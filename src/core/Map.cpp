@@ -176,14 +176,16 @@ bool Map::DeletePointCloudList(const string& name, int type){
     else if ( type == 1 ) // partial matching
     {
         bool deleteSome = false;
-        for( auto iter = mmPointCloudLists.begin();iter!=mmPointCloudLists.end();iter++ )
+        for( auto iter = mmPointCloudLists.begin();iter!=mmPointCloudLists.end();)
         {
             auto strPoints = *iter;
             if( strPoints.first.find(name) != strPoints.first.npos )
             {
-                mmPointCloudLists.erase(iter);
+                iter = mmPointCloudLists.erase(iter);
                 deleteSome = true;
             }
+            else 
+                iter++;
         }
         return deleteSome;
     }

@@ -7,42 +7,39 @@
 #ifndef __EllipsoidSLAM_POLYGON_HPP__
 #define __EllipsoidSLAM_POLYGON_HPP__
 
-#include <cxcore.h>
+// #include <cxcore.h>  // not recoginized by OpenCV 4.x
+#include <opencv2/core.hpp>
 
 namespace EllipsoidSLAM
 {
-	
-float distPoint( CvPoint p1, CvPoint p2 ) ;
-float distPoint(CvPoint2D32f p1,CvPoint2D32f p2) ;
-bool segementIntersection(CvPoint p0_seg0,CvPoint p1_seg0,CvPoint p0_seg1,CvPoint p1_seg1,CvPoint * intersection) ;
-bool segementIntersection(CvPoint2D32f p0_seg0,CvPoint2D32f p1_seg0,CvPoint2D32f p0_seg1,CvPoint2D32f p1_seg1,CvPoint2D32f * intersection) ;
+float distPoint( cv::Point2d p1, cv::Point2d p2 ) ;
+bool segementIntersection(cv::Point2d p0_seg0,cv::Point2d p1_seg0,cv::Point2d p0_seg1,cv::Point2d p1_seg1,cv::Point2d * intersection) ;
 
-bool pointInPolygon(CvPoint p,const CvPoint * points,int n) ;
-bool pointInPolygon(CvPoint2D32f p,const CvPoint2D32f * points,int n) ;
+bool pointInPolygon(cv::Point2d p,const cv::Point2d * points,int n) ;
 
 
 #define MAX_POINT_POLYGON 64
 struct Polygon {
-	CvPoint pt[MAX_POINT_POLYGON];
+	cv::Point2d pt[MAX_POINT_POLYGON];
 	int     n;
 
 	Polygon(int n_ = 0 ) { assert(n_>= 0 && n_ < MAX_POINT_POLYGON); n = n_;}
 	virtual ~Polygon() {}
 
 	void clear() { n = 0; }
-	void add(const CvPoint &p) {if(n < MAX_POINT_POLYGON) pt[n++] = p;}
-	void push_back(const CvPoint &p) {add(p);}
+	void add(const cv::Point2d &p) {if(n < MAX_POINT_POLYGON) pt[n++] = p;}
+	void push_back(const cv::Point2d &p) {add(p);}
 	int size() const { return n;}
-	CvPoint getCenter() const ;
-	const CvPoint & operator[] (int index) const { assert(index >= 0 && index < n); return pt[index];}
-	CvPoint& operator[] (int index) { assert(index >= 0 && index < n); return pt[index]; }
+	cv::Point2d getCenter() const ;
+	const cv::Point2d & operator[] (int index) const { assert(index >= 0 && index < n); return pt[index];}
+	cv::Point2d& operator[] (int index) { assert(index >= 0 && index < n); return pt[index]; }
 	void pointsOrdered() ;
 	float area() const ;
-	bool pointIsInPolygon(CvPoint p) const ;
+	bool pointIsInPolygon(cv::Point2d p) const ;
 };
 
 
-void intersectPolygon( const CvPoint * poly0, int n0,const CvPoint * poly1,int n1, Polygon & inter ) ;
+void intersectPolygon( const cv::Point2d * poly0, int n0,const cv::Point2d * poly1,int n1, Polygon & inter ) ;
 void intersectPolygon( const Polygon & poly0, const Polygon & poly1, Polygon & inter ) ;
 void intersectPolygonSHPC(const Polygon * sub,const Polygon* clip,Polygon* res) ;
 void intersectPolygonSHPC(const Polygon & sub,const Polygon& clip,Polygon& res) ;

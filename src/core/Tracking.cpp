@@ -164,7 +164,7 @@ namespace EllipsoidSLAM
 
     bool Tracking::GrabPoseAndObjects(const Eigen::VectorXd &pose, const Eigen::MatrixXd &bboxMap,
     const cv::Mat &imDepth, const cv::Mat &imRGB, bool withAssociation) {
-        GrabPoseAndObjects(0, pose, bboxMap, imDepth, imRGB, withAssociation);
+        return GrabPoseAndObjects(0, pose, bboxMap, imDepth, imRGB, withAssociation);
     }
 
     bool Tracking::GrabPoseAndObjects(double timestamp, const Eigen::VectorXd &pose, const Eigen::MatrixXd &bboxMap,
@@ -200,6 +200,7 @@ namespace EllipsoidSLAM
         // cout << " -- time_Visualization: " <<(double)(time_Visualization - time_ProcessCurrentFrame) / CLOCKS_PER_SEC << "s" << endl;
         // cout << " - [ total_frame: " <<(double)(time_Visualization - time_start) / CLOCKS_PER_SEC << "s ]" << endl;
 
+        return true;
     }
 
     void Tracking::ProcessVisualization()

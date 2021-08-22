@@ -6,7 +6,7 @@ namespace EllipsoidSLAM{
     {
         if ( mConfig == nullptr )
             mConfig = shared_ptr<Config>(new Config);
-        mConfig->mFile = cv::FileStorage( filename.c_str(), cv::FileStorage::READ );
+        mConfig->mFile.open( filename.c_str(), cv::FileStorage::READ );
         if ( !mConfig->mFile.isOpened())
         {
             std::cerr<<"parameter file "<< filename <<" does not exist."<<std::endl;

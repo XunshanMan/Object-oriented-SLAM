@@ -245,13 +245,15 @@ namespace EllipsoidSLAM {
         auto pointLists = mpSystem->getMap()->GetPointCloudList();
 
         // Iterate over the menu and delete the menu if the corresponding clouds are no longer available
-        for( auto menuPair = mmPointCloudOptionMenus.begin(); menuPair!=mmPointCloudOptionMenus.end(); menuPair++)
+        for( auto menuPair = mmPointCloudOptionMenus.begin(); menuPair!=mmPointCloudOptionMenus.end(); )
         {
             if(pointLists.find(menuPair->first) == pointLists.end())
             {
                 delete menuPair->second;        // destroy the dynamic menu 
-                mmPointCloudOptionMenus.erase(menuPair);  
+                menuPair = mmPointCloudOptionMenus.erase(menuPair);  
             }
+            else 
+                menuPair++;
         }
 
         // Iterate over the cloud lists to add new menu.

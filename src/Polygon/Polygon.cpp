@@ -2,35 +2,14 @@
 
 namespace EllipsoidSLAM
 {
-float distPoint(CvPoint2D32f v,CvPoint2D32f w) { 
+float distPoint(cv::Point2d v,cv::Point2d w) { 
 	return sqrtf((v.x - w.x)*(v.x - w.x) + (v.y - w.y)*(v.y - w.y)) ;
 }
 
-float distPoint(CvPoint p1,CvPoint p2) { 
-	int x = p1.x - p2.x;
-	int y = p1.y - p2.y;
-	return sqrt((float)x*x+y*y);
-}
-
-static CvPoint2D32f cvPoint32f( CvPoint p) {
-	CvPoint2D32f s;
-	s.x= (float)p.x;
-	s.y= (float)p.y;
-	return s;
-}
-
-bool segementIntersection(CvPoint p0,CvPoint p1,CvPoint p2,CvPoint p3,CvPoint * intersection) {
-	CvPoint2D32f p;
-	bool ok = segementIntersection(cvPoint32f(p0),cvPoint32f(p1),cvPoint32f(p2),cvPoint32f(p3),&p);
-	if( ok ) 
-		*intersection = cvPoint((int)p.x,(int)p.y);
-	return ok;
-}
-
-bool segementIntersection(CvPoint2D32f p0,CvPoint2D32f p1,CvPoint2D32f p2,CvPoint2D32f p3,CvPoint2D32f * intersection) {
-	CvPoint2D32f s1, s2;
-	s1 = cvPoint2D32f(p1.x - p0.x, p1.y - p0.y);
-	s2 = cvPoint2D32f(p3.x - p2.x, p3.y - p2.y);
+bool segementIntersection(cv::Point2d p0,cv::Point2d p1,cv::Point2d p2,cv::Point2d p3,cv::Point2d * intersection) {
+	cv::Point2d s1, s2;
+	s1 = cv::Point2d(p1.x - p0.x, p1.y - p0.y);
+	s2 = cv::Point2d(p3.x - p2.x, p3.y - p2.y);
 
 	float s10_x = p1.x - p0.x;
 	float s10_y = p1.y - p0.y;
@@ -63,23 +42,11 @@ bool segementIntersection(CvPoint2D32f p0,CvPoint2D32f p1,CvPoint2D32f p2,CvPoin
 
 	float t = t_numer / denom;
 
-	*intersection = cvPoint2D32f(p0.x + (t * s10_x), p0.y + (t * s10_y) );
+	*intersection = cv::Point2d(p0.x + (t * s10_x), p0.y + (t * s10_y) );
 	return true;
 }
 
-bool pointInPolygon(CvPoint2D32f p,const CvPoint2D32f * points,int n) {
-	int i, j ;
-	bool c = false;
-	for(i = 0, j = n - 1; i < n; j = i++) {
-		if( ( (points[i].y >= p.y ) != (points[j].y >= p.y) ) &&
-			(p.x <= (points[j].x - points[i].x) * (p.y - points[i].y) / (points[j].y - points[i].y) + points[i].x)
-			)
-			c = !c;
-	}
-	return c;
-}
-
-bool pointInPolygon(CvPoint p,const CvPoint * points,int n) {
+bool pointInPolygon(cv::Point2d p,const cv::Point2d * points,int n) {
 	int i, j ;
 	bool c = false;
 	for(i = 0, j = n - 1; i < n; j = i++) {
@@ -92,7 +59,7 @@ bool pointInPolygon(CvPoint p,const CvPoint * points,int n) {
 }
 
 
-float computeArea(const CvPoint * pt,int n ) {
+float computeArea(const cv::Point2d * pt,int n ) {
 	float area0 = 0.f;
 	for (int i = 0 ; i < n ; i++ ) {
 		int j = (i+1)%n;
@@ -103,12 +70,12 @@ float computeArea(const CvPoint * pt,int n ) {
 }
 
 struct PointAngle{
-	CvPoint p;
+	cv::Point2d p;
 	float angle;
 };
 
-CvPoint Polygon::getCenter() const {
-	CvPoint center;
+cv::Point2d Polygon::getCenter() const {
+	cv::Point2d center;
 	center.x = 0;
 	center.y = 0;
 	for (int i = 0 ; i < n ; i++ ) {
@@ -133,7 +100,7 @@ float Polygon::area() const {
 
 void Polygon::pointsOrdered() {
 	if( n <= 0) return;
-	CvPoint center = getCenter();
+	cv::Point2d center = getCenter();
 	PointAngle pc[MAX_POINT_POLYGON];
 	for (int i = 0 ; i < n ; i++ ) {
 		pc[i].p.x = pt[i].x;
@@ -147,11 +114,11 @@ void Polygon::pointsOrdered() {
 	}
 }
 
-bool Polygon::pointIsInPolygon(CvPoint p) const {
+bool Polygon::pointIsInPolygon(cv::Point2d p) const {
 	return pointInPolygon(p,pt,n);
 }
 
-void intersectPolygon( const CvPoint * poly0, int n0,const CvPoint * poly1,int n1, Polygon & inter )  {
+void intersectPolygon( const cv::Point2d * poly0, int n0,const cv::Point2d * poly1,int n1, Polygon & inter )  {
 	inter.clear();
 	for (int i = 0 ; i < n0 ;i++) {
 		if( pointInPolygon(poly0[i],poly1,n1) ) {
@@ -165,13 +132,13 @@ void intersectPolygon( const CvPoint * poly0, int n0,const CvPoint * poly1,int n
 	}
 
 	for (int i = 0 ; i < n0 ;i++) {
-		CvPoint p0,p1,p2,p3;
+		cv::Point2d p0,p1,p2,p3;
 		p0 = poly0[i];
 		p1 = poly0[(i+1)%n0];
 		for (int j = 0 ; j < n1 ;j++) {
 			p2 = poly1[j];
 			p3 = poly1[(j+1)%n1];
-			CvPoint pinter;
+			cv::Point2d pinter;
 			if(segementIntersection(p0,p1,p2,p3,&pinter)) {
 				inter.add(pinter);
 			}
@@ -187,18 +154,18 @@ void intersectPolygon( const Polygon & poly0, const Polygon & poly1, Polygon & i
 //------------------------------------------------------------------------------------------------------------
 //             SHPC :  Sutherland-Hodgeman-Polygon-Clipping Algorihtm
 //------------------------------------------------------------------------------------------------------------
-static inline int cross(const CvPoint* a,const CvPoint* b) {
+static inline int cross(const cv::Point2d* a,const cv::Point2d* b) {
 	return a->x * b->y - a->y * b->x;
 }
 
-static inline CvPoint* vsub(const CvPoint* a,const CvPoint* b, CvPoint* res) {
+static inline cv::Point2d* vsub(const cv::Point2d* a,const cv::Point2d* b, cv::Point2d* res) {
 	res->x = a->x - b->x;
 	res->y = a->y - b->y;
 	return res;
 }
 
-static int line_sect(const CvPoint* x0,const CvPoint* x1,const CvPoint* y0,const CvPoint* y1, CvPoint* res) {
-	CvPoint dx, dy, d;
+static int line_sect(const cv::Point2d* x0,const cv::Point2d* x1,const cv::Point2d* y0,const cv::Point2d* y1, cv::Point2d* res) {
+	cv::Point2d dx, dy, d;
 	vsub(x1, x0, &dx);
 	vsub(y1, y0, &dy);
 	vsub(x0, y0, &d);
@@ -211,8 +178,8 @@ static int line_sect(const CvPoint* x0,const CvPoint* x1,const CvPoint* y0,const
 	return 1;
 }
 
-static int left_of(const CvPoint* a,const CvPoint* b,const CvPoint* c) {
-	CvPoint tmp1, tmp2;
+static int left_of(const cv::Point2d* a,const cv::Point2d* b,const cv::Point2d* c) {
+	cv::Point2d tmp1, tmp2;
 	int x;
 	vsub(b, a, &tmp1);
 	vsub(c, b, &tmp2);
@@ -220,11 +187,11 @@ static int left_of(const CvPoint* a,const CvPoint* b,const CvPoint* c) {
 	return x < 0 ? -1 : x > 0;
 }
 
-static void poly_edge_clip(const Polygon* sub,const  CvPoint* x0,const  CvPoint* x1, int left, Polygon* res) {
+static void poly_edge_clip(const Polygon* sub,const  cv::Point2d* x0,const  cv::Point2d* x1, int left, Polygon* res) {
 	int i, side0, side1;
-	CvPoint tmp;
-	const CvPoint* v0 = sub->pt+ sub->n - 1;
-	const CvPoint* v1;
+	cv::Point2d tmp;
+	const cv::Point2d* v0 = sub->pt+ sub->n - 1;
+	const cv::Point2d* v1;
 	res->clear();
 
 	side0 = left_of(x0, x1, v0);

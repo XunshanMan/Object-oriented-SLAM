@@ -135,6 +135,8 @@ namespace EllipsoidSLAM
 
             glPopMatrix();
         }
+
+        return true;
     }
 
     // draw all the planes
@@ -143,6 +145,8 @@ namespace EllipsoidSLAM
         for( size_t i=0; i<planes.size(); i++) {
             drawPlaneWithEquation(planes[i]);
         }
+
+        return true;
     }
 
     // draw a single plane
@@ -412,6 +416,8 @@ namespace EllipsoidSLAM
 
         glPointSize( 1 );
         glPopMatrix();
+
+        return true;
     }
 
     // In : Tcw

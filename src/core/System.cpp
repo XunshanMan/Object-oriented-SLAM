@@ -49,7 +49,7 @@ namespace EllipsoidSLAM
     bool System::TrackWithObjects(double timestamp, const Eigen::VectorXd &pose, const Eigen::MatrixXd & bboxMat, const cv::Mat &imDepth, const cv::Mat &imRGB,
                     bool withAssociation)
     {
-        mpTracker->GrabPoseAndObjects(timestamp, pose, bboxMat, imDepth, imRGB, withAssociation);
+        return mpTracker->GrabPoseAndObjects(timestamp, pose, bboxMat, imDepth, imRGB, withAssociation);
     }
 
     Map* System::getMap() {

@@ -107,7 +107,7 @@ namespace EllipsoidSLAM
             if( !is_border )
             {
                 rectangle(im, rec, Scalar(255,0,0), 3);
-                putText(im, to_string(labelId), Point(vDet(1), vDet(2)), CV_FONT_HERSHEY_SIMPLEX, 1.5, Scalar(0,255,0), 2);
+                putText(im, to_string(labelId), Point(vDet(1), vDet(2)), cv::FONT_HERSHEY_SIMPLEX, 1.5, Scalar(0,255,0), 2);
             }
         }
 

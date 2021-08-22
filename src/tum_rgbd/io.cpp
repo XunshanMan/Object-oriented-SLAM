@@ -270,6 +270,8 @@ namespace TUMRGBD
     {
         msDetectionDir = path;
         mbDetectionLoaded = true;
+
+        return true;
     }
 
     Eigen::MatrixXd Dataset::getDetectionMat(){

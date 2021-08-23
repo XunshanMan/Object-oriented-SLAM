@@ -17,7 +17,7 @@ We have released a C++ implementation and a demo trajectory. We need to point ou
 
 ## Author
 
-Ziwei Liao et al., Robotics Institute, School of Mechanical Engineering & Automation, Beihang University, Beijing, China (Email: liaoziwei@buaa.edu.cn)
+Ziwei Liao et al., Robotics Institute, School of Mechanical Engineering & Automation, Beihang University, Beijing, China (Email: liaoziwei{at}buaa.edu.cn)
 
 ## Related Paper
 Please cite the following papers when you found this code useful for your research. Welcome to read our new paper [2], which proposes two RGB-D observation models for quadrics, and introduces an automatic data association method.
